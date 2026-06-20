@@ -1,8 +1,9 @@
-import EventCard from "@/components/EventCard";
+import { Suspense } from "react";
 import ExploreBtn from "@/components/ExploreBtn";
-import { events, IEvent } from "@/lib/constants";
+import EventList from "@/components/EventList";
+import { cacheLife } from "next/cache";
 
-export default function page() {
+export default async function page() {
   return (
     <section>
       <h1 className="text-center">
@@ -16,16 +17,9 @@ export default function page() {
 
       <div className="mt-20 space-y-7">
         <h3>Featured Events</h3>
-
-        <ul className="events">
-          {events &&
-            events.length > 0 &&
-            events.map((event: IEvent) => (
-              <li key={event.title} className="list-none">
-                <EventCard {...event} />
-              </li>
-            ))}
-        </ul>
+        <Suspense>
+          <EventList />
+        </Suspense>
       </div>
     </section>
   );
