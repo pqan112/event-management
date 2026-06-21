@@ -1,15 +1,13 @@
 import { IEvent } from "@/database";
 import EventCard from "./EventCard";
 import { cacheLife } from "next/cache";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+import { getEvents } from "@/lib/actions/event.actions";
 
 export default async function EventList() {
   "use cache";
   cacheLife("event");
 
-  const response = await fetch(`${BASE_URL}/api/events`);
-  const { events } = await response.json();
+  const events = await getEvents();
 
   return (
     <ul className="events">
