@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import ExploreBtn from "@/components/ExploreBtn";
 import EventList from "@/components/EventList";
-import { cacheLife } from "next/cache";
 
 export default async function page() {
   return (
