@@ -1,11 +1,12 @@
 import { IEvent } from "@/database";
 import EventCard from "./EventCard";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { getEvents } from "@/lib/actions/event.actions";
 
 export default async function EventList() {
   "use cache";
   cacheLife("event");
+  cacheTag("events");
 
   const events = await getEvents();
 

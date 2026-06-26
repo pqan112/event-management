@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import { IEvent } from "@/database";
-import { getSimilarEventsBySlug } from "@/lib/actions/event.actions";
+import {
+  getEventBySlug,
+  getSimilarEventsBySlug,
+} from "@/lib/actions/event.actions";
 import Image from "next/image";
 import BookEvent from "@/components/BookEvent";
 import EventCard from "@/components/EventCard";
-import { cacheLife } from "next/cache";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+import { cacheLife, cacheTag } from "next/cache";
 
 const EventDetailItem = ({
   icon,
@@ -57,28 +58,11 @@ const EventDetails = async ({
 const EventDetailsCached = async ({ slug }: { slug: string }) => {
   "use cache";
   cacheLife("event");
+  cacheTag(`event-${slug}`);
 
-  let event;
-  try {
-    const request = await fetch(`${BASE_URL}/api/events/${slug}`, {
-      next: { revalidate: 60 },
-    });
+  const event = await getEventBySlug(slug);
 
-    if (!request.ok) {
-      if (request.status === 404) {
-        return notFound();
-      }
-      throw new Error(`Failed to fetch event: ${request.statusText}`);
-    }
-
-    const response = await request.json();
-    event = response.event;
-
-    if (!event) {
-      return notFound();
-    }
-  } catch (error) {
-    console.error("Error fetching event:", error);
+  if (!event) {
     return notFound();
   }
 

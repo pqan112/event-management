@@ -18,6 +18,7 @@ export const createBooking = async ({
 
     await Booking.create({ eventId, slug, email });
 
+    // TODO: revalidateTag(`event-${slug}`) once EventDetailsCached shows a real booking count
     return { success: true };
   } catch (e) {
     console.error("create booking failed", e);

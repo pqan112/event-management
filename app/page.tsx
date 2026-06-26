@@ -16,7 +16,7 @@ export default async function page() {
 
       <div className="mt-20 space-y-7">
         <h3>Featured Events</h3>
-        <Suspense>
+        <Suspense fallback={<p>Loading events...</p>}>
           <EventList />
         </Suspense>
       </div>
